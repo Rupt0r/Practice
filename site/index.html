@@ -1,3 +1,113 @@
-<html>
-  
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D-карты корпусов университета</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>3D-карты корпусов университета</h1>
+      <p class="subtitle">Проектная практика 2025</p>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#home">Главная</a>
+    <a href="#about">О проекте</a>
+    <a href="#team">Участники</a>
+    <a href="#journal">Журнал</a>
+    <a href="#resources">Ресурсы</a>
+    <a href="#gallery">Галерея</a>
+    <a href="#report">Отчёт</a>
+  </nav>
+
+  <section id="home" class="intro">
+    <div class="container">
+      <h2>Аннотация проекта</h2>
+      <p>Проект направлен на моделирование корпусов университета в формате 3D и дальнейшую интеграцию этих моделей в платформу 2ГИС. Это позволит улучшить ориентирование на территории и повысить доступность информации о структуре кампуса.</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2>О проекте</h2>
+      <p>В рамках проектной практики участники создают точные трёхмерные модели зданий университета, используя программное обеспечение Blender и публичные данные. Основной задачей является реалистичное и пропорциональное отображение корпусов с возможностью последующей загрузки в картографические системы.</p>
+    </div>
+  </section>
+
+  <section id="team" class="team">
+    <div class="container">
+      <h2>Участники</h2>
+      <ul>
+        <li>Иван Иванов — отвечает за геометрию моделей и экспорт в нужный формат</li>
+        <li>Мария Смирнова — рендеринг, текстуры, оформление визуализаций</li>
+        <li>Дмитрий Козлов — сбор исходных данных, работа с чертежами</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="journal" class="journal">
+    <div class="container">
+      <h2>Журнал проекта</h2>
+      <ul>
+        <li><strong>01.04.2025:</strong> Начат сбор исходных данных и чертежей.</li>
+        <li><strong>15.04.2025:</strong> Готова первая модель (корпус А), проведён тест в Blender.</li>
+        <li><strong>03.05.2025:</strong> Разработан макет сайта, добавлены первые изображения моделей.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="resources" class="resources">
+    <div class="container">
+      <h2>Ресурсы</h2>
+      <ul>
+        <li><a href="https://2gis.ru" target="_blank">Официальный сайт 2ГИС</a></li>
+        <li><a href="https://www.blender.org/" target="_blank">Blender — программа для 3D-моделирования</a></li>
+        <li><a href="https://ru.wikipedia.org/wiki/3D-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5" target="_blank">Статья о 3D-моделировании</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <div class="container">
+      <h2>Галерея моделей</h2>
+      <div class="grid">
+        <a href="#modal1"><img src="assets/images/building1.jpg" alt="Корпус 1"></a>
+        <a href="#modal2"><img src="assets/images/building2.jpg" alt="Корпус 2"></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="report">
+    <div class="container">
+      <h2>Отчёт</h2>
+      <p>Полную версию отчёта можно скачать <a href="assets/report.pdf" target="_blank">здесь</a>.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Университет. Проектная практика.</p>
+    </div>
+  </footer>
+
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <a href="#" class="close">×</a>
+      <img src="assets/images/building1.jpg" alt="Корпус 1 в полном размере">
+    </div>
+  </div>
+
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <a href="#" class="close">×</a>
+      <img src="assets/images/building2.jpg" alt="Корпус 2 в полном размере">
+    </div>
+  </div>
+</body>
 </html>
