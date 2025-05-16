@@ -1,6 +1,9 @@
 import asyncio
 import json
+import logging
 import os
+from functools import wraps
+
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
@@ -8,13 +11,32 @@ from aiogram.types import Message
 
 import data.secret_data as sd
 
+# Настройка логирования
+logging.basicConfig(
+    filename="data/bot.log",
+    filemode="a",
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+
+def log_command(name: str):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            logging.info(f"{name}: active")
+            result = await func(*args, **kwargs)
+            logging.info(f"{name}: inactive")
+            return result
+        return wrapper
+    return decorator
+
+
 API_TOKEN = sd.SECRET_TOKEN
 ADMIN_ID = sd.SECRET_ADMIN_ID
 
-print(sd.SECRET_TOKEN)
-
 router = Router()
 users = set()
+
 
 def load_models():
     path = "data/models.json"
@@ -23,24 +45,31 @@ def load_models():
             return json.load(f)
     return {}
 
+
 @router.message(Command("start"))
+@log_command("start")
 async def cmd_start(message: Message):
-    print('log_start: active')
     users.add(message.from_user.id)
-    await message.answer("Привет! Я бот-помощник по 3D-картам корпусов университета.\n"
-                         "Команды: /корпуса /галерея /новости /ресурсы /помощь")
-    print('log_start: inactive')
+    await message.answer(
+        "Привет! Я бот-помощник по 3D-картам корпусов университета.\n"
+        "Команды: /корпуса /галерея /новости /ресурсы /помощь"
+    )
+
 
 @router.message(Command("помощь"))
+@log_command("help")
 async def cmd_help(message: Message):
-    print('log_help: active')
-    await message.answer("/корпуса — список корпусов\n/галерея — изображения\n"
-                         "/новости — прогресс проекта\n/ресурсы — полезные ссылки")
-    print('log_help: inactive')
+    await message.answer(
+        "/корпуса — список корпусов\n"
+        "/галерея — изображения\n"
+        "/новости — прогресс проекта\n"
+        "/ресурсы — полезные ссылки"
+    )
+
 
 @router.message(Command("корпуса"))
+@log_command("corpuses")
 async def cmd_corpuses(message: Message):
-    print('log_corpuses: active')
     models = load_models()
     if not models:
         await message.answer("Нет доступных корпусов.")
@@ -49,42 +78,47 @@ async def cmd_corpuses(message: Message):
     for name, data in models.items():
         text += f"🔹 {name}: {data['description']}\n"
     await message.answer(text)
-    print('log_corpuses: inactive')
+
 
 @router.message(Command("галерея"))
+@log_command("gallery")
 async def cmd_gallery(message: Message):
-    print('log_gallery: active')
     models = load_models()
     for model in models.values():
         img_path = model.get("image")
         if img_path and os.path.exists(img_path):
             with open(img_path, "rb") as img:
                 await message.answer_photo(img, caption=model["description"])
-    print('log_gallery: inactive')
+
 
 @router.message(Command("новости"))
+@log_command("news")
 async def cmd_news(message: Message):
-    print('log_news: active')
-    await message.answer("📰 Новости проекта:\n1. Создан корпус A\n2. Добавлен корпус B\n3. Интеграция с 2ГИС")
-    print('log_news: inactive')
+    await message.answer(
+        "📰 Новости проекта:\n"
+        "1. Создан корпус A\n"
+        "2. Добавлен корпус B\n"
+        "3. Интеграция с 2ГИС"
+    )
+
 
 @router.message(Command("ресурсы"))
+@log_command("resources")
 async def cmd_resources(message: Message):
-    print('log_resources: active')
     await message.answer("🔗 Полезные ссылки:\n- https://2gis.ru\n- https://mospolytech.ru")
-    print('log_resources: inactive')
+
 
 @router.message(Command("статистика"))
+@log_command("stats")
 async def cmd_stats(message: Message):
-    print('log_stats: active')
     if message.from_user.id != ADMIN_ID:
         return
     await message.answer(f"Всего пользователей: {len(users)}")
-    print('log_stats: inactive')
+
 
 @router.message(Command("добавить"))
+@log_command("add")
 async def cmd_add(message: Message):
-    print('log_add: active')
     if message.from_user.id != ADMIN_ID:
         return
     args = message.text.replace("/добавить", "").strip().split(" | ")
@@ -97,7 +131,7 @@ async def cmd_add(message: Message):
     with open("data/models.json", "w", encoding="utf-8") as f:
         json.dump(models, f, ensure_ascii=False, indent=2)
     await message.answer(f"✅ Добавлен корпус {name}")
-    print('log_add: inactive')
+
 
 async def main():
     bot = Bot(token=API_TOKEN, parse_mode=ParseMode.HTML)
@@ -107,6 +141,7 @@ async def main():
     os.makedirs("data", exist_ok=True)
     await dp.start_polling(bot)
 
+
 if __name__ == "__main__":
-    print('Я покакал')
+    logging.info("BOT: active")
     asyncio.run(main())
